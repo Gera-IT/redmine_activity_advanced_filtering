@@ -44,6 +44,11 @@
     <%= form_tag({}, :method => :get) do %>
 
         <h3><%= l(:label_activity) %></h3>
+        <b><label style="font-family: 'Trebuchet MS', Verdana, sans-serif;">By user</label></b>
+        <p><select id="_user_id" name="user_id"><option value="">Select user</option>
+          <%= options_for_select(@project.users.map{|e| [e.name, e.id]}, selected = params[:user_id]) %>
+        </select></p>
+
         <ul>
           <% @activity.event_types.each do |t| %>
               <li>
@@ -54,20 +59,14 @@
                 </label>
               </li>
           <% end %>
-          <b><label>Per User</label></b>
-          <% @project.users.each do |u| %>
 
-              <li>
-              <%= check_box_tag "user_id", u.id, params[:user_id].to_i == u.id, {class: 'user_activity'}%>
-              <label><%= u.name%></label>
-              </li>
-          <% end %>
         </ul>
         <% if @project && @project.descendants.active.any? %>
             <%= hidden_field_tag 'with_subprojects', 0 %>
             <p><label><%= check_box_tag 'with_subprojects', 1, @with_subprojects %> <%=l(:label_subproject_plural)%></label></p>
         <% end %>
         <%#= hidden_field_tag('user_id', params[:user_id]) unless params[:user_id].blank? %>
+        <%= link_to 'Check All', '#', {class: "select-all-filters"}%>
         <p><%= submit_tag l(:button_apply), :class => 'button-small', :name => nil %></p>
     <% end %>
     <%= link_to "Reset Filters", 'activity' %>
@@ -77,6 +76,12 @@
 
 <% html_title(l(:label_activity), @author) -%>
 <script>
+
+  $('.select-all-filters').click(function(event){
+      $('input[type=checkbox]').prop('checked', true);
+      event.preventDefault();
+
+  });
 
     $('.user_activity').on('change', function() {
         $('.user_activity').not(this).prop('checked', false);
