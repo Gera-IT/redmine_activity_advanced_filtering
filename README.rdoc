@@ -1,3 +1,0 @@
-= redmine_detailed_activity
-
-Description goes here
