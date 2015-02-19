@@ -45,7 +45,7 @@
 
         <h3><%= l(:label_activity) %></h3>
         <b><label style="font-family: 'Trebuchet MS', Verdana, sans-serif;">By user</label></b>
-        <p><select id="_user_id" name="user_id"><option value="">Select user</option>
+        <p><select id="_user_id" name="user_id"><option value="">ALL</option>
           <%= options_for_select(@project.users.map{|e| [e.name, e.id]}, selected = params[:user_id]) %>
         </select></p>
 
